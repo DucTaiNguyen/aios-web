@@ -1,27 +1,49 @@
 const API = "https://aios-web-vyta.onrender.com/step";
 
-const out = document.getElementById("out");
+let auto = false;
 
-async function fetchAI() {
-  try {
-    const res = await fetch(API);
+function log(msg) {
+  const logBox = document.getElementById("log");
+  logBox.innerHTML += msg + "<br>";
+  logBox.scrollTop = logBox.scrollHeight;
+}
 
-    const text = await res.text();
+async function run() {
+  const res = await fetch(API);
+  const data = await res.json();
 
-    try {
-      const data = JSON.parse(text);
-      out.innerText = JSON.stringify(data, null, 2);
-    } catch (e) {
-      out.innerText = "NOT JSON:\n" + text;
-    }
+  // CORE PANEL
+  document.getElementById("out").innerText =
+    JSON.stringify(data, null, 2);
 
-  } catch (err) {
-    out.innerText = "FETCH ERROR: " + err;
+  // METRICS
+  document.getElementById("energy").innerText =
+    data.state.energy.toFixed(3);
+
+  document.getElementById("awareness").innerText =
+    data.state.awareness.toFixed(3);
+
+  document.getElementById("time").innerText =
+    data.state.t;
+
+  // LOG
+  log("STEP EXECUTED | t=" + data.state.t);
+}
+
+function toggleAuto() {
+  auto = !auto;
+  log("AUTO MODE: " + (auto ? "ON" : "OFF"));
+
+  if (auto) {
+    loop();
   }
 }
 
-// ⛑ đảm bảo DOM load xong mới chạy
-window.onload = () => {
-  fetchAI();
-  setInterval(fetchAI, 1000);
-};
+function loop() {
+  if (!auto) return;
+  run();
+  setTimeout(loop, 1000);
+}
+
+// init
+run();

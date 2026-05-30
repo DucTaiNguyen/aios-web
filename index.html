@@ -1,3 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AIOS - Mission Control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="topbar">
+    🛰 AIOS MISSION CONTROL CENTER
+    <span class="live">● LIVE</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT PANEL -->
+    <div class="panel">
+      <h2>🧠 CORE SYSTEM</h2>
+      <pre id="out">Initializing AIOS...</pre>
+
+      <button onclick="run()">RUN STEP</button>
+      <button onclick="toggleAuto()">AUTO MODE</button>
+    </div>
 <div class="research-panel">
 
   <h2>📘 AIOS RESEARCH OVERVIEW</h2>
@@ -34,3 +58,23 @@
   </p>
 
 </div>
+    <!-- CENTER PANEL -->
+    <div class="panel">
+      <h2>📊 LIVE METRICS</h2>
+
+      <div class="metric">Energy: <span id="energy">-</span></div>
+      <div class="metric">Awareness: <span id="awareness">-</span></div>
+      <div class="metric">Time Step: <span id="time">-</span></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <h2>📡 SYSTEM LOG</h2>
+      <div id="log" class="log"></div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

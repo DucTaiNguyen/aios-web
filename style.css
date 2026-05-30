@@ -1,29 +1,60 @@
-.research-panel {
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #00ffcc55;
-  background: rgba(0, 0, 0, 0.4);
-  color: #00ffcc;
+body {
+  margin: 0;
   font-family: monospace;
-  box-shadow: 0 0 15px #00ffcc22;
-}
-
-.research-panel h2 {
+  background: radial-gradient(circle at center, #0b0f1a, #000);
   color: #00ffcc;
-  border-bottom: 1px solid #00ffcc33;
-  padding-bottom: 5px;
 }
 
-.research-panel h3 {
-  color: #00ffaa;
-  margin-top: 15px;
+.topbar {
+  padding: 10px;
+  background: #111;
+  border-bottom: 1px solid #00ffcc;
+  display: flex;
+  justify-content: space-between;
 }
 
-.research-panel p {
-  color: #bfffee;
-  line-height: 1.5;
+.live {
+  color: #00ff66;
+  animation: blink 1s infinite;
 }
 
-.research-panel ul {
-  color: #bfffee;
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 90vh;
+}
+
+.panel {
+  border: 1px solid #00ffcc33;
+  padding: 15px;
+  overflow: auto;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px;
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #00ffcc;
+  color: black;
+}
+
+.metric {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.log {
+  font-size: 12px;
+  height: 80%;
+  overflow-y: auto;
 }
