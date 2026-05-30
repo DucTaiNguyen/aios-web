@@ -46,9 +46,11 @@ def evolve(state):
 def step():
     global STATE
     STATE = evolve(STATE)
-
     return {
-        "state": STATE,
-        "timestamp": time.time(),
-        "ok": True
+    "state": {
+        "t": t,
+        "energy": energy,
+        "awareness": awareness,
+        "feedback": feedback
     }
+}

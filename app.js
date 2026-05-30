@@ -2,7 +2,11 @@ const API = "https://aios-web-vyta.onrender.com/step";
 
 let auto = false;
 let chart;
+const s = data.state;
 
+const energy = s.energy ?? s[0];
+const awareness = s.awareness ?? s[1];
+const t = s.t ?? 0;
 function initChart() {
   const ctx = document.getElementById("chart").getContext("2d");
 
