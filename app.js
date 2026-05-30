@@ -4,21 +4,14 @@ let auto = false;
 let chart;
 
 function initChart() {
-  const canvas = document.getElementById("chart");
-
-  if (!canvas) {
-    console.error("NO CHART CANVAS FOUND");
-    return;
-  }
-
-  const ctx = canvas.getContext("2d");
+  const ctx = document.getElementById("chart").getContext("2d");
 
   chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: [],
       datasets: [{
-        label: "AIOS Awareness",
+        label: "Awareness",
         data: [],
         borderColor: "#00ffcc",
         borderWidth: 2,
@@ -36,14 +29,11 @@ function initChart() {
   });
 }
 
-function updateChart(value) {
-  if (!chart) {
-    console.log("Chart not ready");
-    return;
-  }
+function updateChart(v) {
+  if (!chart) return;
 
   chart.data.labels.push("");
-  chart.data.datasets[0].data.push(value);
+  chart.data.datasets[0].data.push(v);
 
   if (chart.data.datasets[0].data.length > 30) {
     chart.data.datasets[0].data.shift();
@@ -54,10 +44,7 @@ function updateChart(value) {
 }
 
 function log(msg) {
-  const logBox = document.getElementById("log");
-  if (logBox) {
-    logBox.innerHTML += msg + "<br>";
-  }
+  document.getElementById("log").innerHTML += msg + "<br>";
 }
 
 async function run() {
@@ -83,8 +70,8 @@ async function run() {
 
     log("STEP t=" + s.t);
 
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
+    console.error(e);
   }
 }
 

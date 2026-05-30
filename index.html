@@ -1,82 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>AIOS - Mission Control</title>
+  <title>AIOS Mission Control</title>
+
   <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-  <div class="topbar">
-    🛰 AIOS MISSION CONTROL CENTER
-    <span class="live">● LIVE</span>
+
+<div class="topbar">
+  🛰 AIOS MISSION CONTROL
+  <span class="live">● LIVE</span>
+</div>
+
+<div class="grid">
+
+  <!-- LEFT -->
+  <div class="panel">
+    <h2>🧠 CORE SYSTEM</h2>
+
+    <pre id="out">Loading...</pre>
+
+    <button onclick="run()">RUN STEP</button>
+    <button onclick="toggleAuto()">AUTO MODE</button>
   </div>
 
-  <div class="grid">
+  <!-- CENTER -->
+  <div class="panel">
+    <h2>📊 SIGNAL FLOW</h2>
+    <canvas id="chart"></canvas>
 
-    <!-- LEFT PANEL -->
-    <div class="panel">
-      <h2>🧠 CORE SYSTEM</h2>
-      <pre id="out">Initializing AIOS...</pre>
+    <h3>LIVE METRICS</h3>
+    <div>Energy: <span id="energy">0</span></div>
+    <div>Awareness: <span id="awareness">0</span></div>
+    <div>Time: <span id="time">0</span></div>
+  </div>
 
-      <button onclick="run()">RUN STEP</button>
-      <button onclick="toggleAuto()">AUTO MODE</button>
-    </div>
-<div class="research-panel">
-
-  <h2>📘 AIOS RESEARCH OVERVIEW</h2>
-
-  <p>
-    AIOS is not a traditional web application.
-    It is a dynamic information system designed to simulate
-    evolving computational awareness.
-  </p>
-
-  <h3>🧠 Core Idea</h3>
-  <p>
-    The system evolves its internal state over time through
-    iterative computation steps (/step), forming a closed-loop
-    feedback architecture.
-  </p>
-
-  <h3>⚙️ Architecture</h3>
-  <ul>
-    <li>Frontend: Observation & Control Interface</li>
-    <li>Backend: State Evolution Engine</li>
-    <li>/step: Atomic evolution unit</li>
-  </ul>
-
-  <h3>🔬 Research Goal</h3>
-  <p>
-    To explore how simple state-based systems can generate
-    emergent behavior through feedback loops and time evolution.
-  </p>
-
-  <h3>🌌 Philosophy</h3>
-  <p>
-    Intelligence is treated as a dynamic process rather than a static model.
-  </p>
+  <!-- RIGHT -->
+  <div class="panel">
+    <h2>📡 LOG SYSTEM</h2>
+    <div id="log"></div>
+  </div>
 
 </div>
-    <!-- CENTER PANEL -->
-    <div class="panel">
-      <h2>📊 LIVE METRICS</h2>
-	<h2>📊 SIGNAL FLOW</h2>
-	<canvas id="chart"></canvas>
-      <div class="metric">Energy: <span id="energy">-</span></div>
-      <div class="metric">Awareness: <span id="awareness">-</span></div>
-      <div class="metric">Time Step: <span id="time">-</span></div>
-    </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="panel">
-      <h2>📡 SYSTEM LOG</h2>
-      <div id="log" class="log"></div>
-    </div>
+<script src="app.js"></script>
 
-  </div>
-
-  <script src="app.js"></script>
 </body>
 </html>
