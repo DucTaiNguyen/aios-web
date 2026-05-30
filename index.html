@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>AIOS - Mission Control</title>
   <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -61,7 +62,8 @@
     <!-- CENTER PANEL -->
     <div class="panel">
       <h2>📊 LIVE METRICS</h2>
-
+	<h2>📊 SIGNAL FLOW</h2>
+<canvas id="chart"></canvas>
       <div class="metric">Energy: <span id="energy">-</span></div>
       <div class="metric">Awareness: <span id="awareness">-</span></div>
       <div class="metric">Time Step: <span id="time">-</span></div>
