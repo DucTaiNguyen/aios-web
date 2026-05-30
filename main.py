@@ -28,7 +28,8 @@ def evolve(state):
 
     energy = abs(math.sin(t / 5) + noise + state["feedback"])
 
-    awareness = min(1.0, state["awareness"] + energy * 0.02)
+    awareness = state["awareness"] + energy * 0.03
+    awareness = min(1.0, awareness)
 
     feedback = energy * 0.2
 
