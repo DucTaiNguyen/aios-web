@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AIOS SYSTEM</title>
+  <meta charset="UTF-8">
+  <title>AIOS LIVE DASHBOARD</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="container">
 
-<div class="center">
-  <h1>⚛️ AIOS CONTROL SYSTEM</h1>
-  <p>JARVIS-Q Interface</p>
+    <h1>🧠 AIOS LIVE DASHBOARD</h1>
 
-  <a href="app.html">ENTER DASHBOARD</a>
-</div>
+    <div class="status">
+      <span class="dot"></span>
+      LIVE SYSTEM
+    </div>
 
+    <button onclick="run()">RUN AI STEP</button>
+
+    <pre id="out">Waiting for AIOS...</pre>
+
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
