@@ -6,7 +6,6 @@ import random
 
 app = FastAPI()
 
-# 🌐 CORS (cho GitHub Pages + browser gọi API)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,7 +14,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🧠 AIOS STATE (OBJECT - QUAN TRỌNG)
 STATE = {
     "t": 0,
     "energy": 1.0,
@@ -23,22 +21,16 @@ STATE = {
     "feedback": 0.0
 }
 
-# ⚙️ EVOLUTION ENGINE
 def evolve(state):
     t = state["t"] + 1
 
-    # noise system (tạo dao động giống “AI sống”)
-    noise = random.uniform(-0.15, 0.15)
+    noise = random.uniform(-0.1, 0.1)
 
-    # energy dynamics (phi tuyến)
     energy = abs(math.sin(t / 5) + noise + state["feedback"])
 
-    # awareness tăng dần theo energy
-    awareness = state["awareness"] + (0.02 * energy)
-    awareness = min(1.0, awareness)
+    awareness = min(1.0, state["awareness"] + energy * 0.02)
 
-    # feedback loop (self-adjusting system)
-    feedback = energy * 0.25
+    feedback = energy * 0.2
 
     return {
         "t": t,
@@ -47,13 +39,17 @@ def evolve(state):
         "feedback": feedback
     }
 
-# 🚀 MAIN API
 @app.get("/step")
 def step():
     global STATE
-
     STATE = evolve(STATE)
 
     return {
         "state": STATE,
-        "tai_dng": STATE["t"] * 1.1 + STATE["awareness"] * 10
+        "tai_dng": STATE["t"] + STATE["awareness"] * 10,
+        "timestamp": time.time()
+    }
+
+@app.get("/")
+def root():
+    return {"status": "AIOS LIVE"}

@@ -1,5 +1,10 @@
 const API = "https://aios-web-vyta.onrender.com/step";
+const s = data.state;
 
+// 🔥 FIX ARRAY vs OBJECT mismatch
+const energy = Array.isArray(s) ? s[0] : s.energy;
+const awareness = Array.isArray(s) ? s[1] : s.awareness;
+const t = Array.isArray(s) ? 0 : s.t;
 let auto = false;
 let chart;
 const s = data.state;
