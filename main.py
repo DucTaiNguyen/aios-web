@@ -21,12 +21,32 @@ STATE = {
     "feedback": 0.0
 }
 
+#def evolve(state):
+ #   t = state["t"] + 1
+#
+ #   noise = random.uniform(-0.1, 0.1)
+
+  #  energy = abs(math.sin(t / 5) + noise + state["feedback"])
+
+   # awareness = state["awareness"] + energy * 0.03
+ #   awareness = min(1.0, awareness)
+#
+  #  feedback = energy * 0.2
+
+   # return {
+    #    "t": t,
+     #   "energy": energy,
+      #  "awareness": awareness,
+       # "feedback": feedback
+   # }
 def evolve(state):
     t = state["t"] + 1
 
-    noise = random.uniform(-0.1, 0.1)
-
-    energy = abs(math.sin(t / 5) + noise + state["feedback"])
+    energy = abs(
+        __import__("math").sin(t / 5)
+        + __import__("random").uniform(-0.1, 0.1)
+        + state["feedback"]
+    )
 
     awareness = state["awareness"] + energy * 0.03
     awareness = min(1.0, awareness)
@@ -39,7 +59,6 @@ def evolve(state):
         "awareness": awareness,
         "feedback": feedback
     }
-
 @app.get("/step")
 def step():
     global STATE
