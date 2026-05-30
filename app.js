@@ -1,15 +1,19 @@
 const API = "https://aios-web-vyta.onrender.com/step";
 
 let auto = false;
-let history = [];
-
-const ctx = document.createElement("canvas");
 let chart;
 
 function initChart() {
-  const c = document.getElementById("chart").getContext("2d");
+  const canvas = document.getElementById("chart");
 
-  chart = new Chart(c, {
+  if (!canvas) {
+    console.error("NO CHART CANVAS FOUND");
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: [],
@@ -18,11 +22,13 @@ function initChart() {
         data: [],
         borderColor: "#00ffcc",
         borderWidth: 2,
-        fill: false
+        fill: false,
+        tension: 0.3
       }]
     },
     options: {
       responsive: true,
+      animation: false,
       scales: {
         x: { display: false }
       }
@@ -31,7 +37,10 @@ function initChart() {
 }
 
 function updateChart(value) {
-  if (!chart) return;
+  if (!chart) {
+    console.log("Chart not ready");
+    return;
+  }
 
   chart.data.labels.push("");
   chart.data.datasets[0].data.push(value);
@@ -46,40 +55,41 @@ function updateChart(value) {
 
 function log(msg) {
   const logBox = document.getElementById("log");
-  logBox.innerHTML += msg + "<br>";
-  logBox.scrollTop = logBox.scrollHeight;
+  if (logBox) {
+    logBox.innerHTML += msg + "<br>";
+  }
 }
 
 async function run() {
-  const res = await fetch(API);
-  const data = await res.json();
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
 
-  const state = data.state;
+    const s = data.state;
 
-  // CORE PANEL
-  document.getElementById("out").innerText =
-    JSON.stringify(data, null, 2);
+    document.getElementById("out").innerText =
+      JSON.stringify(data, null, 2);
 
-  // METRICS
-  document.getElementById("energy").innerText =
-    state.energy.toFixed(3);
+    document.getElementById("energy").innerText =
+      s.energy.toFixed(3);
 
-  document.getElementById("awareness").innerText =
-    state.awareness.toFixed(3);
+    document.getElementById("awareness").innerText =
+      s.awareness.toFixed(3);
 
-  document.getElementById("time").innerText =
-    state.t;
+    document.getElementById("time").innerText =
+      s.t;
 
-  // GRAPH
-  updateChart(state.awareness);
+    updateChart(s.awareness);
 
-  // LOG
-  log(`STEP t=${state.t} | E=${state.energy.toFixed(2)} | A=${state.awareness.toFixed(2)}`);
+    log("STEP t=" + s.t);
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function toggleAuto() {
   auto = !auto;
-  log("AUTO MODE: " + (auto ? "ON" : "OFF"));
   if (auto) loop();
 }
 
