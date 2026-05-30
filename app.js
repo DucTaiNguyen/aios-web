@@ -1,30 +1,27 @@
 const API = "https://aios-web-vyta.onrender.com/step";
 
-async function fetchAI() {
-  const out = document.getElementById("out");
+const out = document.getElementById("out");
 
+async function fetchAI() {
   try {
     const res = await fetch(API);
 
-    if (!res.ok) {
-      out.innerText = "HTTP ERROR: " + res.status;
-      return;
+    const text = await res.text();
+
+    try {
+      const data = JSON.parse(text);
+      out.innerText = JSON.stringify(data, null, 2);
+    } catch (e) {
+      out.innerText = "NOT JSON:\n" + text;
     }
 
-    const data = await res.json();
-
-    out.innerText = JSON.stringify(data, null, 2);
-
   } catch (err) {
-    out.innerText = "ERROR: " + err;
+    out.innerText = "FETCH ERROR: " + err;
   }
 }
 
-// ⚡ realtime loop
-function startRealtime() {
-  fetchAI(); // chạy ngay lần đầu
-  setInterval(fetchAI, 1000); // mỗi 1 giây update
-}
-
-// auto start khi mở web
-startRealtime();
+// ⛑ đảm bảo DOM load xong mới chạy
+window.onload = () => {
+  fetchAI();
+  setInterval(fetchAI, 1000);
+};
