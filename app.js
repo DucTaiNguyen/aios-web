@@ -50,28 +50,40 @@ function log(msg) {
 async function run() {
   try {
     const res = await fetch(API);
+
     const data = await res.json();
 
+    console.log("API DATA:", data);
+
+    if (!data || !data.state) {
+      console.error("NO STATE");
+      return;
+    }
+
     const s = data.state;
+
+    document.getElementById("energy").innerText =
+      (s.energy ?? 0).toFixed(3);
+
+    document.getElementById("awareness").innerText =
+      (s.awareness ?? 0).toFixed(3);
+
+    document.getElementById("time").innerText =
+      s.t ?? 0;
 
     document.getElementById("out").innerText =
       JSON.stringify(data, null, 2);
 
-    document.getElementById("energy").innerText =
-      s.energy.toFixed(3);
+    updateChart(s.awareness ?? 0);
 
-    document.getElementById("awareness").innerText =
-      s.awareness.toFixed(3);
+    log("STEP OK t=" + (s.t ?? 0));
 
-    document.getElementById("time").innerText =
-      s.t;
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
 
-    updateChart(s.awareness);
-
-    log("STEP t=" + s.t);
-
-  } catch (e) {
-    console.error(e);
+    document.getElementById("energy").innerText = "ERR";
+    document.getElementById("awareness").innerText = "ERR";
+    document.getElementById("time").innerText = "ERR";
   }
 }
 
