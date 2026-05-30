@@ -1,26 +1,27 @@
 const API = "https://aios-web-vyta.onrender.com/step";
-const s = data.state;
 
-// 🔥 FIX ARRAY vs OBJECT mismatch
-const energy = Array.isArray(s) ? s[0] : s.energy;
-const awareness = Array.isArray(s) ? s[1] : s.awareness;
-const t = Array.isArray(s) ? 0 : s.t;
 let auto = false;
 let chart;
-const s = data.state;
 
-const energy = s.energy ?? s[0];
-const awareness = s.awareness ?? s[1];
-const t = s.t ?? 0;
+// =====================
+// 🧠 INIT CHART
+// =====================
 function initChart() {
-  const ctx = document.getElementById("chart").getContext("2d");
+  const canvas = document.getElementById("chart");
+
+  if (!canvas) {
+    console.error("❌ chart canvas not found");
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
 
   chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: [],
       datasets: [{
-        label: "Awareness",
+        label: "AIOS Awareness",
         data: [],
         borderColor: "#00ffcc",
         borderWidth: 2,
@@ -38,11 +39,15 @@ function initChart() {
   });
 }
 
-function updateChart(v) {
+// =====================
+// 📊 UPDATE GRAPH
+// =====================
+function updateChart(value) {
   if (!chart) return;
 
   chart.data.labels.push("");
-  chart.data.datasets[0].data.push(v);
+
+  chart.data.datasets[0].data.push(value);
 
   if (chart.data.datasets[0].data.length > 30) {
     chart.data.datasets[0].data.shift();
@@ -52,43 +57,68 @@ function updateChart(v) {
   chart.update();
 }
 
+// =====================
+// 📡 LOG SYSTEM
+// =====================
 function log(msg) {
-  document.getElementById("log").innerHTML += msg + "<br>";
+  const box = document.getElementById("log");
+  if (!box) return;
+
+  box.innerHTML += msg + "<br>";
+  box.scrollTop = box.scrollHeight;
 }
 
+// =====================
+// ⚙️ MAIN RUN STEP
+// =====================
 async function run() {
   try {
     const res = await fetch(API);
 
     const data = await res.json();
 
-    console.log("API DATA:", data);
+    console.log("AIOS DATA:", data);
 
     if (!data || !data.state) {
-      console.error("NO STATE");
+      console.error("❌ NO STATE DATA");
       return;
     }
 
     const s = data.state;
 
+    // =====================
+    // 🧠 SAFE PARSING (FIX ARRAY/OBJECT BUG)
+    // =====================
+    const energy = Array.isArray(s) ? s[0] : (s.energy ?? 0);
+    const awareness = Array.isArray(s) ? s[1] : (s.awareness ?? 0);
+    const t = Array.isArray(s) ? 0 : (s.t ?? 0);
+
+    // =====================
+    // 📊 UI UPDATE
+    // =====================
     document.getElementById("energy").innerText =
-      (s.energy ?? 0).toFixed(3);
+      energy.toFixed(3);
 
     document.getElementById("awareness").innerText =
-      (s.awareness ?? 0).toFixed(3);
+      awareness.toFixed(3);
 
-    document.getElementById("time").innerText =
-      s.t ?? 0;
+    document.getElementById("time").innerText = t;
 
     document.getElementById("out").innerText =
       JSON.stringify(data, null, 2);
 
-    updateChart(s.awareness ?? 0);
+    // =====================
+    // 📈 GRAPH
+    // =====================
+    updateChart(awareness);
 
-    log("STEP OK t=" + (s.t ?? 0));
+    // =====================
+    // 📡 LOG
+    // =====================
+    log(`STEP OK t=${t}`);
 
   } catch (err) {
-    console.error("FETCH ERROR:", err);
+    console.error("❌ FETCH ERROR:", err);
 
     document.getElementById("energy").innerText = "ERR";
     document.getElementById("awareness").innerText = "ERR";
@@ -96,17 +126,27 @@ async function run() {
   }
 }
 
+// =====================
+// 🔁 AUTO MODE
+// =====================
 function toggleAuto() {
   auto = !auto;
+  log(auto ? "AUTO MODE ON" : "AUTO MODE OFF");
+
   if (auto) loop();
 }
 
 function loop() {
   if (!auto) return;
+
   run();
+
   setTimeout(loop, 1000);
 }
 
+// =====================
+// 🚀 INIT
+// =====================
 window.onload = () => {
   initChart();
   run();
