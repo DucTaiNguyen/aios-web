@@ -6,6 +6,7 @@ import random
 
 app = FastAPI()
 
+# 🌐 CORS (cho GitHub Pages + browser gọi API)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🧠 STATE SYSTEM
+# 🧠 AIOS STATE (OBJECT - QUAN TRỌNG)
 STATE = {
     "t": 0,
     "energy": 1.0,
@@ -26,13 +27,18 @@ STATE = {
 def evolve(state):
     t = state["t"] + 1
 
-    noise = random.uniform(-0.2, 0.2)
+    # noise system (tạo dao động giống “AI sống”)
+    noise = random.uniform(-0.15, 0.15)
 
+    # energy dynamics (phi tuyến)
     energy = abs(math.sin(t / 5) + noise + state["feedback"])
 
-    awareness = min(1.0, state["awareness"] + 0.02 * energy)
+    # awareness tăng dần theo energy
+    awareness = state["awareness"] + (0.02 * energy)
+    awareness = min(1.0, awareness)
 
-    feedback = energy * 0.3
+    # feedback loop (self-adjusting system)
+    feedback = energy * 0.25
 
     return {
         "t": t,
@@ -41,16 +47,13 @@ def evolve(state):
         "feedback": feedback
     }
 
-# 🚀 API STEP
+# 🚀 MAIN API
 @app.get("/step")
 def step():
     global STATE
+
     STATE = evolve(STATE)
+
     return {
-    "state": {
-        "t": t,
-        "energy": energy,
-        "awareness": awareness,
-        "feedback": feedback
-    }
-}
+        "state": STATE,
+        "tai_dng": STATE["t"] * 1.1 + STATE["awareness"] * 10
